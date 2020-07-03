@@ -234,13 +234,16 @@ function agregarFila(){
 					'<td style="width:7%;">'+count+'</td>'+
 					'<td style="margin-left:20px;"><input type="text" name="codigocuenta[]" id="codigocuenta'+count+'" autocomplete="off"  class="form-control"  value="" onchange="getCodigocuenta('+count+')"  /></td>'+
 					'<td style="margin-left:20px;"><input type="text" name="nombrecuenta[]" id="nombrecuenta'+count+'" autocomplete="off"  class="form-control"  value="" /></td>'+
-					'<td style="padding-left:20px;"><input type="text" name="debe[]"  id="debe'+count+'" autocomplete="off"  class="form-control" onkeyup="sumarsubtotal('+count+')" onkeypress="return valideKey(event);"  /></td>'+
-					'<td style="padding-left:20px;"><input type="text" name="haber[]" id="haber'+count+'" autocomplete="off"  class="form-control"  value="" onkeypress="return valideKey(event);" onkeyup="format(this);" /></td>'+
+					'<td style="padding-left:20px;"><input type="text" name="debe[]"  id="debe'+count+'" autocomplete="off"  class="form-control" onkeyup="sumarsubtotal()" onkeypress="return valideKey(event);"  /></td>'+
+					'<td style="padding-left:20px;"><input type="text" name="haber[]" id="haber'+count+'" autocomplete="off"  class="form-control"  value="" onkeyup="sumartotalhaber()" onkeypress="return valideKey(event);" onkeyup="format(this);" /></td>'+
 					'<td style="padding-left:20px;">'+
 					'<button class="btn btn-default removeProductRowBtn" type="button" id="removeProductRowBtn" onclick="removeProductRow('+count+')"><i class="far fa-trash-alt"></i></button></td>'+
-					'<td><input type="hidden" class="form-control" name="subtotal[]"  onchage="sumarsubtotal('+count+')"   id="subtotal'+count+'"  >'+
+					'<input type="hidden" class="form-control" name="subtotal[]"  onchange="sumarsubtotal()"   id="subtotal'+count+'"  >'+
+					'<input type="hidden" class="form-control" name="subtotalhaber[]"  onchange="sumartotalhaber()"   id="subtotalhaber'+count+'"  >'+
 				'</tr>';
 
+			sumarsubtotal();
+			sumartotalhaber();
 
 			if(tableLength > 0) {							
 				$("#asientoscontablesTable tbody tr:last").after(fila);
@@ -262,21 +265,47 @@ function agregarFila(){
 //suma de subtotal por cada producto añadido
 function sumarsubtotal(){
   
-  let debe=document.getElementsByName("debe[]");
-  let sub=document.getElementsByName("subtotal[]");
+  const debe=document.getElementsByName("debe[]");
+  const sub=document.getElementsByName("subtotal[]");
 
-  const total=0.0;
+  let total=0.0;
 
-  for (var i = 0; i < debe.length; i++) {
+  for (var i = 0; i < debe.length; i++) {  
 
-  	let inpC=debe[i];
-  	let inpS=sub[i];
+  	const inpC=debe[i];
+  	const inpS=sub[i];
 
-    
-    inpC.value  = parseInt(inpC.value);
-    document.getElementsByName("subtotal")[i].innerHTML=inpC.value;
+
+  	inpS.value  = parseInt(inpC.value);
+    document.getElementsByName("subtotal[]")[i].innerHTML=inpS.value;
+
   }
+  
 	calcularDebe();
+  }
+
+
+  //suma de subtotal por cada producto añadido
+function sumartotalhaber(){
+  
+  const haber=document.getElementsByName("haber[]");
+  const sub=document.getElementsByName("subtotalhaber[]");
+
+  let total=0.0;
+
+  for (var i = 0; i < haber.length; i++) {  
+
+  	const inpC=haber[i];
+  	const inpS=sub[i];
+
+
+  	inpS.value  = parseInt(inpC.value);
+    document.getElementsByName("subtotalhaber[]")[i].innerHTML=inpS.value;
+
+  }
+  
+	calcularhaber();
+
   }
 
 //Eliminar Producto registro
@@ -447,23 +476,58 @@ function valideKey(evt) {
 function calcularDebe(){
 
   const sub = document.getElementsByName("subtotal[]");
+  const debe = document.getElementsByName("debe[]");
   let total=0.0;
 
+  
+
   for (let i = 0; i < sub.length; i++) {
+  		const inpC = debe[i];
 
-  	
+  	if (isNaN(sub[i])) {
   		total += parseInt(sub[i].value);
+  	}
+
   	
-    
-      
-
-    
-
+  		
+  
+ 	
+  
   }
 
 
   //$("#total_debe").html(total);
   $("#totaldebe").val(total);
+
+  
+}
+
+
+function calcularhaber(){
+
+  const sub = document.getElementsByName("subtotalhaber[]");
+  const debe = document.getElementsByName("haber[]");
+  let total=0.0;
+
+  
+
+  for (let i = 0; i < sub.length; i++) {
+  		const inpC = debe[i];
+
+  	if (isNaN(sub[i])) {
+  		total += parseInt(sub[i].value);
+  	}
+
+  	
+  		
+  
+ 	
+  
+  }
+
+
+  //$("#total_debe").html(total);
+  $("#totalhaber").val(total);
 
   
 }

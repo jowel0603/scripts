@@ -220,12 +220,15 @@ if ($_SESSION["Asientos Contables"] == 1 ) {
 			                    </td>
 
 			                    <td style="padding-left:20px;">
-			                      <input type="text" name="debe[]" id="debe<?php echo $x; ?>" autocomplete="off"  class="form-control" onkeypress="return valideKey(event);"  onkeyup="sumarsubtotal(<?php echo $x; ?>)"; />  
+			                      <input type="text" name="debe[]" id="debe<?php echo $x; ?>" autocomplete="off"  class="form-control" onkeypress="return valideKey(event);"  onkeyup="sumarsubtotal(<?php echo $x; ?>)"; /> 
+
+			                       <input type="hidden" name="subtotal[]" id="subtotal<?php echo $x; ?>"  autocomplete="off" class="form-control"  onchange="sumarsubtotal(<?php echo $x; ?>);"  />
 			                    </td>
 
 			                    <td style="padding-left:20px;">
 			                      <div class="form-group">
 			                      <input type="text" name="haber[]" id="haber<?php echo $x; ?>"  autocomplete="off" class="form-control" onkeypress="return valideKey(event);"    />
+			                      <input type="hidden" class="form-control" name="subtotalhaber[]"  onchange="sumartotalhaber()"   id="subtotalhaber'+count+'"  >
 			                      </div>
 			                    </td> 
 
@@ -235,8 +238,8 @@ if ($_SESSION["Asientos Contables"] == 1 ) {
 			                      <button class="btn btn-default removeProductRowBtn" type="button" id="removeProductRowBtn" onclick="removeProductRow(<?php echo $x; ?>)"><i class="far fa-trash-alt"></i></button>
 			                    </td>  
 
-			                    <td>
-			                    	<input type="text" name="subtotal" id="subtotal<?php echo $x; ?>"  autocomplete="off" class="form-control"  onchange="sumarsubtotal(<?php echo $x; ?>);"  />
+			                    
+			                    	
 			                    	
 			                  </tr>
 
@@ -260,7 +263,7 @@ if ($_SESSION["Asientos Contables"] == 1 ) {
 			              	<table>
 			              		<tr>
 			              			<td id="total_debe">Total Debe</td>
-			              			<td><input  type="text" name="totaldebe" id="totaldebe" class="form-control"  readonly=""></td>
+			              			<td><input  type="text" name="totaldebe[]" id="totaldebe" class="form-control"  readonly="" onchange="sumarsubtotal(<?php echo $x; ?>);"></td>
 			              			
 			              		</tr>
 
